@@ -1,2 +1,5 @@
 .vs
 *.pyproj
+*.log
+logs
+__pycache__
