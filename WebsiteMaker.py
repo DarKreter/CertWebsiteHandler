@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from glob import glob
 import sys
-import os
+import os, platform
 
 from time import sleep
 
@@ -18,7 +18,10 @@ downloadPath = currentPath + "PDF/"
 howManyFilesInPDFdir = utils.PDF_dir_create(currentPath)
 
 # pobieram z pliku txt pasy do logowania
-contents = utils.get_last_n_lines("../strona.txt", 2)
+if platform.system() == "Windows":
+    contents = utils.get_last_n_lines("../strona.txt", 2)
+elif platform.system() == "Linux":
+    contents = utils.get_last_n_lines("../strona.txt", 3)
 login = contents[0]
 password = contents[1]
 
