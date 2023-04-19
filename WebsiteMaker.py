@@ -47,6 +47,7 @@ driver.find_element_by_id('sign-in').click()
 driver.find_element_by_id('_58_login').send_keys(login)
 driver.find_element_by_id('_58_password').send_keys(password)
 driver.find_element_by_xpath("//input[@value='Sign In']").click()
+#driver.find_element_by_xpath("//input[@value='Zaloguj']").click()
 
 # Get to adding cert page
 driver.get("https://rejestrcheb.mrit.gov.pl/wykaz-swiadectw-charakterystyki-energetycznej-czesci-budynku")
@@ -109,20 +110,21 @@ for file in ListOfXML:
 
     # sprawdzamy czy po zapisaniu pliku jest o jeden wiecej plik niz przy poprzednim sprawdzeniu
     fileDownloadedSuccesfuly = utils.WaitUntilDownloaded(downloadPath,
-                                                         howManyFilesInPDFdir, 10)
+                                                         howManyFilesInPDFdir, 15)
     if not fileDownloadedSuccesfuly:
         emergencyList = emergencyList + " " + file
+        print("File not downloaded!!!")
         continue
 
     howManyFilesInPDFdir = howManyFilesInPDFdir + 1
 
+    sleep(2)  # Make sure its downloaded
     # dodajemy do nazwy pdf'a co trzeba
     # * means all if need specific format then *.csv
     list_of_files = glob(downloadPath + "*.pdf")
     latest_file = max(list_of_files, key=os.path.getctime)
     newName = latest_file[:(len(latest_file) - 4)] + \
         "_" + file[: (len(file) - 4)] + ".pdf"
-    sleep(2)  # Make sure its downloaded
     os.rename(latest_file, newName)
 
 
