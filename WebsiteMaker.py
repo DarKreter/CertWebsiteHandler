@@ -36,6 +36,7 @@ if len(ListOfXML) == 0:
     input("\033[31m BRAK PLIKOW! \033[0m")
     exit()
 
+ListOfXML.sort()
 
 driver = utils.FirefoxDriver(downloadPath)
 # Get on the page
