@@ -9,8 +9,13 @@ from selenium.webdriver.common.keys import Keys
 from glob import glob
 import sys
 import os, platform
-
+import signal
 from time import sleep
+
+def signal_handler(sig, frame):
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
 
 currentPath = os.getcwd() + "/"
 downloadPath = currentPath + "PDF/"
@@ -106,9 +111,11 @@ for file in ListOfXML:
         lol.send_keys(Keys.ENTER)
     except:
         emergencyList = emergencyList + " " + file
+        print("aaaa!")
         continue
 
     # sprawdzamy czy po zapisaniu pliku jest o jeden wiecej plik niz przy poprzednim sprawdzeniu
+    # print(howManyFilesInPDFdir)
     fileDownloadedSuccesfuly = utils.WaitUntilDownloaded(downloadPath,
                                                          howManyFilesInPDFdir, 15)
     if not fileDownloadedSuccesfuly:
@@ -126,6 +133,9 @@ for file in ListOfXML:
     newName = latest_file[:(len(latest_file) - 4)] + \
         "_" + file[: (len(file) - 4)] + ".pdf"
     os.rename(latest_file, newName)
+    
+    #Change name of done XML, cause sometimes some are ommited idk why
+    os.rename(currentPath + file, currentPath + file[:len(file) - 4] + "_DONE.xml")
 
 
 driver.close()
